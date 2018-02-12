@@ -76,27 +76,35 @@ let stringCompare = function(s, t) {
     j = t.length - 1;
 
     reconstructPath(s, t, i, j);
+    console.log(str);
     return m[i][j].cost;
 };
 
+let str = "";
 let reconstructPath = function(s, t, i, j) {
-    if(m[i][j].parent === -1) return;
+    if(m[i][j].parent === -1) {
+        str += s[i];
+        return;
+    }
 
     if(m[i][j].parent === MATCH) {
         reconstructPath(s, t, i - 1, j - 1);
         matchOut(s, t, i, j);
+        str += s[i];
         return;
     }
 
     if(m[i][j].parent === INSERT) {
         reconstructPath(s, t, i, j - 1);
         insertOut(t, j);
+        str += t[j];
         return;
     }
 
     if(m[i][j].parent === DELETE) {
         reconstructPath(s, t, i - 1, j);
         deleteOut(s, i);
+        str += s[i];
         return;
     }
 };
