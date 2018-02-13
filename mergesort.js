@@ -2,67 +2,59 @@
 //because of scoping i think. we really need to be creating and returning arrays at
 //each step
 
-function mergesort(s, low, high) {
-    if(low < high) {
-        let middle = Math.floor((low + high) / 2);
-        mergesort(s, low, middle);
-        mergesort(s, middle+1, high);
-        merge(s, low, middle, high);
+function mergesort(s) {
+    if(s.length === 0 || s.length === 1) {
+        return s;
     }
+
+    let middle = Math.floor(s.length / 2);
+    let left = s.slice(0, middle);
+    let right = s.slice(middle, s.length);
+
+    return merge(mergesort(left), mergesort(right));
 }
 
-function merge(s, low, middle, high) {
-    let buffer1 = [], buffer2 = [];
-
-    //console.log("calling merge with: ", low, middle, high);
-    for(let i = low; i <= middle; i++) {
-        buffer1.push(s[i]);
-    }
-    for(let i = middle+1; i <= high; i++) {
-        buffer2.push(s[i]);
+function merge(left, right) {
+    let res = [];
+    while(left.length && right.length) {
+        if(left[0] <= right[0]) 
+            res.push(left.shift());
+        else 
+            res.push(right.shift());
     }
 
-    i = low;
-    let head1 = null, head2 = null;
-    console.log(buffer1, buffer2);
-    while(!(buffer1.length === 0 || buffer2.length === 0)) {
-        if(buffer1[0] <= buffer2[0]) {
-            buffer1.shift();
-            //s[i] = buffer1.shift();
-            //i++;
-        }
-        else {
-            buffer2.shift();
-            //s[i] = buffer2.shift();
-            //i++;
-        }
-        /*if(buffer1.length) {
-            head1 = buffer1.shift();
-        }
-        if(buffer2.length) {
-            head2 = buffer2.shift();
-        }
-        console.log("wtf", head1, head2);
-        if(head1 !== null && head2 !== null) {
-            if(head1 < head2) {
-                s[i] = head1;
-                console.log("a: ", s[i]);
-                i++;
-            }
-            else {
-                s[i] = head2;
-                console.log("b: ", s[i]);
-                i++;
-            }
-        }*/
-    }
+    while(left.length) res.push(left.shift());
+    while(right.length) res.push(right.shift());
 
-    console.log("\n");
-
-    //while(buffer1.length !== 0) s[i++] = buffer1.unshift();
-    //while(buffer2.length !== 0) s[i++] = buffer2.unshift();
+    return res;
 }
 
-let s = [10, 5, 2, 6, 3, 4];
-mergesort(s, 0, s.length - 1);
-console.log(s);
+
+let a = function() {
+    console.log(mergesort([10, 5, 2, 6, 3, 4]));
+    console.log(mergesort([0]));
+    console.log(mergesort([4, 3, 6, -1, 7]));
+};
+
+function ListNode(val) {
+    this.val = val;
+    this.next = null;
+};
+
+let b = function() {
+    let head = new ListNode(1);
+    head.next = new ListNode(2);
+    head.next.next = new ListNode(3);
+    head.next.next.next = new ListNode(4);
+    //head.next.next.next.next = new ListNode(5);
+    list_mergesort(head);
+};
+
+function list_mergesort(list) {
+}
+
+function list_merge(left, right) {
+
+}
+
+b();
