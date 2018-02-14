@@ -1,1 +1,3 @@
-Dynamic programming algorithms practice
+Dynamic programming algorithms practice.
+
+General data structures and algorithms practice.
