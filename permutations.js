@@ -65,7 +65,7 @@ let construct_candidates = function(a, k, n, c) {
     for(i = 0; i < k; i++) {
         in_perm[ a[i] ] = true;
     }
-    console.log(in_perm);
+    //console.log(in_perm);
 
     let ncandidates = 0;
     for(i = 1; i <= n; i++) {
@@ -84,4 +84,28 @@ let generate_permutations = function(n) {
     backtrack(a, 0, n);
 };
 
-generate_permutations("abc");
+generate_permutations(3);
+
+let string_permutations = function(str) {
+    if(str.length < 2) {
+        return str;
+    }
+
+    let permutations = [];
+
+    for(let i = 0; i < str.length; i++) {
+        let c = str[i];
+        if(str.indexOf(c) !== i) {
+            continue;
+        }
+
+        let remainingString = str.slice(0, i) + str.slice(i + 1, str.length);
+        console.log("c: ", c,  " remainingString: ", remainingString);
+        for(let sub of string_permutations(remainingString)) {
+            permutations.push(c + sub);
+        }
+    }
+    return permutations;
+};
+
+console.log(string_permutations("abc"));
