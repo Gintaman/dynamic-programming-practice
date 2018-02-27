@@ -85,26 +85,75 @@ insertEdge(g2, 6, 7, false);
 let map = ['r', 's', 't', 'u', 'v', 'w', 'x', 'y'];
 
 //printGraph(g2, map);
-printGraph(g2);
+//printGraph(g2);
 
 const WHITE = 1;
 const GRAY = 2;
 const BLACK = 3;
 
-let bfs = function(graph, s) {
-    for(let i = 0; i < graph.edges.length; i++) {
-        if(typeof graph.edges[i] !== 'undefined') {
-            if(i !== s) {
-                let u = graph.edges[i];
-                u.color = WHITE;
-                u.d = Infinity;
-                u.pi = null;
-            }
-            else {
+let processVertexEarly = function(v) {
+    //console.log("processed early: ", v);
+};
 
+let processEdge = function(v, y) {
+    console.log("processed edge: ", v, ", ", y);
+};
+
+let processVertexLate = function(v) {
+    //console.log("processed late: ", v);
+};
+
+let bfs = function(graph, start) {
+    let discovered = [];
+    let processed = [];
+    let parent = [];
+    let queue = [];
+
+    for(let i = 0; i < graph.edges.length; i++) {
+        discovered[i] = false;
+        processed[i] = false;
+        parent[i] = -1;
+    }
+
+    queue.push(start);
+    discovered[start] = true;
+
+    while(queue.length) {
+        let v = queue.shift();
+        processVertexEarly(v);
+        processed[v] = true;
+        let p = graph.edges[v];
+        while(p !== null) {
+            let y = p.y;
+            if((processed[y] === false) || graph.directed) {
+                processEdge(v, y);
             }
+            if(discovered[y] === false) {
+                queue.push(y);
+                discovered[y] = true;
+                parent[y] = v;
+            }
+            p = p.next;
         }
+        processVertexLate(v);
+    }
+    for(let i = 0; i < parent.length; i++) {
+        console.log("vertex ", i, " parent: ", parent[i]);
     }
 };
 
-bfs(g2, 0);
+//bfs(g2, 0);
+
+let g3 = new Graph(false);
+insertEdge(g3, 1, 2, false);
+insertEdge(g3, 1, 5, false);
+insertEdge(g3, 1, 6, false);
+
+insertEdge(g3, 2, 3, false);
+insertEdge(g3, 2, 5, false);
+
+insertEdge(g3, 3, 4, false);
+
+insertEdge(g3, 4, 5, false);
+//printGraph(g3);
+bfs(g3, 1);
